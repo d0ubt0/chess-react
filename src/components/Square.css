@@ -1,0 +1,9 @@
+.SquareContainer{
+    display: flex;
+    box-sizing: border-box;
+    border: 1px solid #fff;
+    justify-content: center;
+    align-items: center;
+    font-size: 64px;
+}
+
