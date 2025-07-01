@@ -2,32 +2,44 @@ import type { SquareType } from "../types";
 import './Square.css';
 
 const symbols = {
-    black: {
-      king: '♔',
-      queen: '♕',
-      rook: '♖',
-      bishop: '♗',
-      knight: '♘',
-      pawn: '♙',
-    },
-    white: {
-      king: '♚',
-      queen: '♛',
-      rook: '♜',
-      bishop: '♝',
-      knight: '♞',
-      pawn: '♟',
-    },
-  };
+  black: {
+    king: '♔',
+    queen: '♕',
+    rook: '♖',
+    bishop: '♗',
+    knight: '♘',
+    pawn: '♙',
+  },
+  white: {
+    king: '♚',
+    queen: '♛',
+    rook: '♜',
+    bishop: '♝',
+    knight: '♞',
+    pawn: '♟',
+  },
+};
 
-export default function Square({children, position}: SquareType){
-    if(!children) return <div className="SquareContainer"></div>
+export default function Square({ children, position, onClickFunction, isSelected, isValidMove }: SquareType) {
+  let SquareClassName = "SquareContainer";
+  const [y, x] = position;
+  const colorSquare = (y + x) % 2 === 0 ? " whiteSquare" : " blackSquare";
+  SquareClassName += colorSquare;
 
-    const colorPiece = children.color
-    const typePiece = children.type
-    const repr = symbols[colorPiece][typePiece]
+  if (isSelected) {
+    SquareClassName += " isSelected";
+  } else if (isValidMove) {
+    SquareClassName += " isValidMove";
+  }
 
-    console.log(position)
 
-    return <div className="SquareContainer">{repr}</div>
+
+  let repr = '';
+  if (children) {
+    const colorPiece = children.color;
+    const typePiece = children.type;
+    repr = symbols[colorPiece][typePiece];
+  }
+
+  return <button className={SquareClassName} onClick={() => onClickFunction(position)}>{repr}</button>;
 }

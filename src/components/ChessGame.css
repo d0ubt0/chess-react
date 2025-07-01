@@ -1,5 +1,5 @@
-.ChessGameContainer{
-    display: grid;
-    grid-template-columns: repeat(8,96px);
-    grid-template-rows: repeat(8,96px);
+.ChessGameContainer {
+  display: grid;
+  grid-template-columns: repeat(8, 96px);
+  grid-template-rows: repeat(8, 96px);
 }

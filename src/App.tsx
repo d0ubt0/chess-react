@@ -3,9 +3,8 @@ import './App.css'
 import ChessGame from './components/ChessGame'
 
 function App() {
-
   return (
-    <ChessGame/>
+    <ChessGame />
   )
 }
 
