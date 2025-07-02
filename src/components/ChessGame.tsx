@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import './ChessGame.css';
 import Square from "./Square";
 import type { BoardType, ColorType, PieceType, PositionType } from "../types";
@@ -41,17 +41,17 @@ export default function ChessGame() {
   const [selected, setSelected] = useState<PositionType | null>(null);
   const [turn, setTurn] = useState<ColorType>('white');
 
-  let validMoves: PositionType[] = [];
-
-  if (selected) {
-    validMoves = [...getDiagonalMoves(selected, board), ...getStraightMoves(selected, board)]
-  }
+  const validMoves = useMemo(() => {
+    if (!selected) return [];
+    return [...getDiagonalMoves(selected, board), ...getStraightMoves(selected, board)];
+  }, [selected]);
 
   const clickFunction = (position: PositionType) => {
     const pieceClick = board[position[0]][position[1]];
 
     if (!selected && !pieceClick) return; //Si no tienes nada seleccionado, y no hay nada  en la posicion seleccionada. No hacer nada
-    if (!selected && pieceClick?.color !== turn) return;
+    if (!selected && pieceClick?.color !== turn) return; //Si no tienes nada seleccionado, y la ficha es de otro color
+    if (selected === position) return;
 
     const newBoard = board.map(row => row.slice());
 
