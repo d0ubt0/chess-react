@@ -15,7 +15,7 @@ export type PieceType = 'pawn' | 'rook' | 'knight' | 'bishop' | 'queen' | 'king'
 export class Piece {
   color: ColorType;
   type: PieceType;
-  hasMoved: Boolean;
+  hasMoved: boolean;
 
   constructor(color: ColorType, type: PieceType) {
     this.color = color;

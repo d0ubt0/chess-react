@@ -1,15 +1,15 @@
 import { useState, useMemo } from "react";
 import './ChessGame.css';
 import Square from "./Square";
-import type { BoardType, ColorType, PieceType, PositionType } from "../types";
+import type { BoardType, ColorType, PositionType } from "../types";
 import { Piece } from "../types";
-import { getDiagonalMoves, getStraightMoves } from "../chessLogic";
+import { getDiagonalMoves, getKnightMoves, getStraightMoves } from "../chessLogic";
 
 const createBoard = (): BoardType => {
   const board: BoardType = []
 
   for (let row = 0; row < 8; row++) {
-    let actualRow: (Piece | null)[] = [];
+    const actualRow: (Piece | null)[] = [];
     for (let col = 0; col < 8; col++) {
       if (row === 0) {
         if (col === 0 || col === 7) actualRow.push(new Piece('black', 'rook'));
@@ -43,31 +43,37 @@ export default function ChessGame() {
 
   const validMoves = useMemo(() => {
     if (!selected) return [];
-    return [...getDiagonalMoves(selected, board), ...getStraightMoves(selected, board)];
-  }, [selected]);
+    return [...getDiagonalMoves(selected, board), ...getStraightMoves(selected, board), ...getKnightMoves(selected, board)];
+  }, [selected, board]);
 
   const clickFunction = (position: PositionType) => {
     const pieceClick = board[position[0]][position[1]];
+    const isValidMove = validMoves.some(([row, col]) => row === position[0] && col === position[1]);  
 
-    if (!selected && !pieceClick) return; //Si no tienes nada seleccionado, y no hay nada  en la posicion seleccionada. No hacer nada
-    if (!selected && pieceClick?.color !== turn) return; //Si no tienes nada seleccionado, y la ficha es de otro color
-    if (selected === position) return;
-
-    const newBoard = board.map(row => row.slice());
-
+    if ((selected?.[0] === position[0] && selected?.[1] === position[1]) || (selected && !isValidMove)){
+      setSelected(null)
+      return;
+    } //Si la posicion seleccionada es la misma que la del ultimo click
+    
     if (selected) {
-      const pieceSelected = board[selected[0]][selected[1]];
+      if (!isValidMove) return;
 
+      const newBoard = board.map(row => row.slice());
+      
       newBoard[selected[0]][selected[1]] = null;
-      newBoard[position[0]][position[1]] = pieceSelected;
+      newBoard[position[0]][position[1]] = board[selected[0]][selected[1]];
+
+      setBoard(newBoard)
 
       setBoard(newBoard);
       setSelected(null);
-      const newTurn = turn == "black" ? 'white' : 'black';
-      setTurn(newTurn);
-    } else {
-      setSelected(position);
+      setTurn(turn === "black" ? "white" : "black");
+      return;
     }
+      
+    if (!pieceClick || pieceClick.color !== turn) return;
+        
+    setSelected(position)
   }
 
   return (
@@ -81,4 +87,6 @@ export default function ChessGame() {
       )}
     </section>
   );
+
 }
+
