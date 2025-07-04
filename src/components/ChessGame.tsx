@@ -3,7 +3,7 @@ import './ChessGame.css';
 import Square from "./Square";
 import type { BoardType, ColorType, PositionType } from "../types";
 import { Piece } from "../types";
-import { getDiagonalMoves, getKnightMoves, getStraightMoves } from "../chessLogic";
+import { getDiagonalMoves, getKnightMoves, getMoves, getStraightMoves } from "../chessLogic";
 
 const createBoard = (): BoardType => {
   const board: BoardType = []
@@ -43,7 +43,7 @@ export default function ChessGame() {
 
   const validMoves = useMemo(() => {
     if (!selected) return [];
-    return [...getDiagonalMoves(selected, board), ...getStraightMoves(selected, board), ...getKnightMoves(selected, board)];
+    return getMoves(selected, board);
   }, [selected, board]);
 
   const clickFunction = (position: PositionType) => {
