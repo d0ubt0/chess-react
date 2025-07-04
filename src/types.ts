@@ -1,6 +1,6 @@
 export type PositionType = [number, number];
 
-export type ColorType = 'black' | 'white';
+export type ColorType = "black" | "white";
 
 export type SquareType = {
   children: Piece | null;
@@ -10,7 +10,13 @@ export type SquareType = {
   isValidMove: boolean;
 };
 
-export type PieceType = 'pawn' | 'rook' | 'knight' | 'bishop' | 'queen' | 'king';
+export type PieceType =
+  | "pawn"
+  | "rook"
+  | "knight"
+  | "bishop"
+  | "queen"
+  | "king";
 
 export class Piece {
   color: ColorType;
@@ -22,6 +28,6 @@ export class Piece {
     this.type = type;
     this.hasMoved = false;
   }
-};
+}
 
 export type BoardType = (Piece | null)[][];

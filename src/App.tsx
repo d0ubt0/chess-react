@@ -1,13 +1,8 @@
-import { useState } from 'react'
-import './App.css'
-import ChessGame from './components/ChessGame'
+import "./App.css";
+import ChessGame from "./components/ChessGame";
 
 function App() {
-  return (
-    <ChessGame />
-  )
+  return <ChessGame />;
 }
 
-export default App
-
-
+export default App;
